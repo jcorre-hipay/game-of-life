@@ -1,0 +1,14 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    GameOfLife\:
+        resource: '../src/'
+        exclude:
+            - '../src/Infrastructure/Kernel.php'
+
+    GameOfLife\Infrastructure\Controller\:
+        resource: '../src/Infrastructure/Controller/'
+        tags:
+            - 'controller.service_arguments'
