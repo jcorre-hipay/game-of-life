@@ -4,6 +4,7 @@ RUN apt update \
     && apt install -y \
         supervisor \
         nginx \
+        sqlite \
         wget \
         git \
         unzip \
@@ -15,7 +16,8 @@ RUN apt update \
         php-dom \
         php-xml \
         php-json \
-        php-pdo
+        php-pdo \
+        php-sqlite3
 
 COPY ./infra/supervisor/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY ./infra/nginx/game-of-life.net /etc/nginx/sites-available/game-of-life.net
@@ -34,6 +36,7 @@ RUN mkdir -p ./var/cache ./var/log \
     && php composer-setup.php --install-dir=/usr/local/bin --filename=composer \
     && rm composer-setup.php \
     && /usr/local/bin/composer install \
+    && sqlite3 ./var/data.db < ./infra/sqlite/schema.sql \
     && chown -R www-data:www-data /var/www/game-of-life.net
 
 CMD ["/usr/bin/supervisord"]

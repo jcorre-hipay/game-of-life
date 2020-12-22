@@ -1,3 +1,6 @@
+parameters:
+    database_url: '%env(resolve:DATABASE_URL)%'
+
 services:
     _defaults:
         autowire: true
