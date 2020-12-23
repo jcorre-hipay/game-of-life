@@ -1,8 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
-        <meta charset="UTF-8">
+        <meta charset="UTF-8"/>
         <title>{% block title %}Game of Life{% endblock %}</title>
+        <link rel="icon" type="image/png" href="{{ asset('images/favicon.png') }}"/>
+        <link rel="stylesheet" media="screen" href="{{ asset('styles/common.css') }}"/>
         {% block stylesheets %}{% endblock %}
     </head>
     <body>

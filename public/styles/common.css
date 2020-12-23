@@ -1,0 +1,105 @@
+html, body, div, span,
+h1, h2, h3, h4, h5, h6,
+p, a, em, strong, dl, dt, dd, ol, ul, li,
+form, fieldset, label, legend,
+table, caption, tbody, thead, tfoot, tr, th, td,
+article, aside, header, footer, nav, section {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font-family: sans-serif;
+    vertical-align: baseline;
+    text-decoration: none;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+a:focus, input:focus {
+    outline: none;
+}
+
+body {
+    background-color: #eaeef9;
+    color: #333333;
+    margin: 20px;
+}
+
+.float-left {
+    float: left;
+}
+
+.float-right {
+    float: right;
+}
+
+h1 {
+    border-bottom: 1px solid #bfc6dd;
+    font-size: 150%;
+    margin: 30px 0;
+    padding-bottom: 5px;
+}
+
+a:not(.button) {
+    color: #3768ff;
+}
+
+a:not(.button):focus, a:not(.button):hover {
+    color: #478afa;
+}
+
+a:not(.button):active {
+    color: #3768ff;
+}
+
+.button {
+    border: 0;
+    border-radius: 4px;
+    color: #ffffff;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 90%;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    width: 120px;
+}
+
+a.button {
+    background-color: #3768ff;
+}
+
+a.button:focus, a.button:hover {
+    background-color: #478afa;
+}
+
+a.button:active {
+    background-color: #3768ff;
+}
+
+input.button {
+    background-color: #1e8e3e;
+}
+
+input.button:focus, input.button:hover {
+    background-color: #20a843;
+}
+
+input.button:active {
+    background-color: #1e8e3e;
+}
+
+input.button-delete {
+    background-color: #d5201b;
+}
+
+input.button-delete:focus, input.button-delete:hover {
+    background-color: #ec2417;
+}
+
+input.button-delete:active {
+    background-color: #d5201b;
+}

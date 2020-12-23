@@ -1,0 +1,53 @@
+{% extends '/layout.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" media="screen" href="{{ asset('styles/colony/show.css') }}"/>
+{% endblock %}
+
+{% block body %}
+    <h1>Colony {{ colony.id }}</h1>
+    <nav class="control-bar">
+        <form class="float-right" method="post" action="{{ url('evolve_colony', {'id': colony.id}) }}">
+            <input type="submit" class="button" tabindex="2" value="next"/>
+        </form>
+        <a href="#" class="button float-left" tabindex="1">previous</a>
+        <span id="colony-generation">{{ colony.generation }}</span>
+    </nav>
+    <table id="colony">
+        <tr>
+            <td class="cell dead-cell"></td>
+            <td class="cell dead-cell"></td>
+            <td class="cell live-cell"></td>
+            <td class="cell dead-cell"></td>
+            <td class="cell dead-cell"></td>
+        </tr>
+        <tr>
+            <td class="cell live-cell"></td>
+            <td class="cell live-cell"></td>
+            <td class="cell dead-cell"></td>
+            <td class="cell live-cell"></td>
+            <td class="cell dead-cell"></td>
+        </tr>
+        <tr>
+            <td class="cell dead-cell"></td>
+            <td class="cell live-cell"></td>
+            <td class="cell dead-cell"></td>
+            <td class="cell live-cell"></td>
+            <td class="cell dead-cell"></td>
+        </tr>
+        <tr>
+            <td class="cell dead-cell"></td>
+            <td class="cell dead-cell"></td>
+            <td class="cell dead-cell"></td>
+            <td class="cell live-cell"></td>
+            <td class="cell dead-cell"></td>
+        </tr>
+        <tr>
+            <td class="cell dead-cell"></td>
+            <td class="cell live-cell"></td>
+            <td class="cell live-cell"></td>
+            <td class="cell live-cell"></td>
+            <td class="cell dead-cell"></td>
+        </tr>
+    </table>
+{% endblock body %}

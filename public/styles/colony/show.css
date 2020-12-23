@@ -1,0 +1,28 @@
+.control-bar {
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+}
+
+#colony-generation {
+    font-size: 140%;
+    font-weight: bold;
+}
+
+#colony {
+    margin: 20px auto;
+}
+
+.cell {
+    border: 2px solid #bfc6dd;
+    width: 10px;
+    height: 10px;
+}
+
+.dead-cell {
+    background-color: #ffffff;
+}
+
+.live-cell {
+    background-color: #60a222;
+}

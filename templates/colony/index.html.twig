@@ -1,0 +1,25 @@
+{% extends '/layout.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" media="screen" href="{{ asset('styles/colony/index.css') }}"/>
+{% endblock %}
+
+{% block body %}
+    <h1>Colonies</h1>
+    <table>
+        {% for colony in colonies %}
+        <tr>
+            <td><a href="{{ url('show_colony', {'id': colony.id, 'generation': colony.generation}) }}">{{ colony.id }}</a></td>
+            <td>{{ colony.generation }}</td>
+            <td>
+                <form method="post" action="#">
+                    <input type="submit" class="button button-delete" value="delete"/>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    <form method="post" action="#">
+        <input type="submit" class="button" value="new"/>
+    </form>
+{% endblock body %}

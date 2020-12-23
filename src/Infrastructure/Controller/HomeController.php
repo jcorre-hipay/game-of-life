@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace GameOfLife\Infrastructure\Controller;
 
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class HomeController
+class HomeController extends AbstractController
 {
     /**
      * @Route("/", methods={"GET"}, name="home")
@@ -16,6 +17,6 @@ class HomeController
      */
     public function index(): Response
     {
-        return new Response("Game of Life is working!", 200, ['content-type' => 'text/plain']);
+        return $this->redirectToRoute('list_colonies', [], 301);
     }
 }

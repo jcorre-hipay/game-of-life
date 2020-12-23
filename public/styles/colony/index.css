@@ -1,0 +1,21 @@
+table {
+    margin: 20px 0;
+    width: 100%;
+}
+
+tr:hover {
+    background-color: #dde5ff;
+}
+
+td {
+    padding: 5px;
+}
+
+td:nth-child(2) {
+    text-align: center;
+    width: 200px;
+}
+
+td:last-child {
+    width: 120px;
+}
