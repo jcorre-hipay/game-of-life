@@ -12,6 +12,7 @@ RUN apt update \
         unzip \
         php \
         php-fpm \
+        php-intl \
         php-zip \
         php-ctype \
         php-iconv \
