@@ -16,6 +16,7 @@ RUN apt update \
         php-zip \
         php-ctype \
         php-iconv \
+        php-mbstring \
         php-dom \
         php-xml \
         php-json \
