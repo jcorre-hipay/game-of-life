@@ -1,0 +1,8 @@
+code_generation: false
+stop_on_failure: false
+verbose: true
+
+suites:
+    default:
+        namespace: GameOfLife
+        psr4_prefix: GameOfLife

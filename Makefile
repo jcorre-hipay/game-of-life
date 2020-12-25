@@ -50,7 +50,7 @@ shell:
 	docker container exec -it -u $(DOCKER_USER):$(DOCKER_GROUP) $(DOCKER_CONTAINER) /bin/bash
 
 phpspec:
-	docker container exec -u $(DOCKER_USER):$(DOCKER_GROUP) $(DOCKER_CONTAINER) ./vendor/bin/phpspec run $(wordlist 2, $(words $(MAKECMDGOALS)), $(MAKECMDGOALS))
+	docker container exec -u $(DOCKER_USER):$(DOCKER_GROUP) $(DOCKER_CONTAINER) ./vendor/bin/phpspec --config ./config/phpspec.yaml run $(wordlist 2, $(words $(MAKECMDGOALS)), $(MAKECMDGOALS))
 
 phpunit:
 	docker container exec -u $(DOCKER_USER):$(DOCKER_GROUP) $(DOCKER_CONTAINER) ./vendor/bin/phpunit --config ./config/phpunit.xml $(wordlist 2, $(words $(MAKECMDGOALS)), $(MAKECMDGOALS))
