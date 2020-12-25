@@ -56,7 +56,7 @@ phpunit:
 	docker container exec -u $(DOCKER_USER):$(DOCKER_GROUP) $(DOCKER_CONTAINER) ./vendor/bin/phpunit --config ./config/phpunit.xml $(wordlist 2, $(words $(MAKECMDGOALS)), $(MAKECMDGOALS))
 
 behat:
-	docker container exec -u $(DOCKER_USER):$(DOCKER_GROUP) $(DOCKER_CONTAINER) ./vendor/bin/behat $(wordlist 2, $(words $(MAKECMDGOALS)), $(MAKECMDGOALS))
+	docker container exec -u $(DOCKER_USER):$(DOCKER_GROUP) $(DOCKER_CONTAINER) ./vendor/bin/behat --config ./config/behat.yaml $(wordlist 2, $(words $(MAKECMDGOALS)), $(MAKECMDGOALS))
 
 composer:
 	docker container exec -u $(DOCKER_USER):$(DOCKER_GROUP) $(DOCKER_CONTAINER) composer $(wordlist 2, $(words $(MAKECMDGOALS)), $(MAKECMDGOALS))

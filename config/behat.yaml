@@ -1,0 +1,19 @@
+default:
+    extensions:
+        FriendsOfBehat\SymfonyExtension:
+            bootstrap: ~
+            kernel:
+                class: 'GameOfLife\Infrastructure\Kernel'
+                path: ~
+                environment: ~
+                debug: ~
+        Behat\MinkExtension:
+            sessions:
+                symfony:
+                    symfony: ~
+    suites:
+        default:
+            paths:
+                - '%paths.base%/../features'
+            contexts:
+                - 'GameOfLife\Tests\Behat\FeatureContext'
