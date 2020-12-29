@@ -15,3 +15,17 @@ services:
         resource: '../src/Infrastructure/Controller/'
         tags:
             - 'controller.service_arguments'
+
+    #                                                                                             #
+    # Domain services                                                                             #
+    #                                                                                             #
+
+    GameOfLife\Domain\Colony\ColonyFactoryInterface:
+        '@GameOfLife\Mock\FakeColonyFactory'
+
+    GameOfLife\Domain\Colony\ColonyRepositoryInterface:
+        '@GameOfLife\Mock\FakeColonyRepository'
+
+    #                                                                                             #
+    # Infrastructure services                                                                     #
+    #                                                                                             #
