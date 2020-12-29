@@ -18,4 +18,5 @@ default:
             paths:
                 - '%paths.base%/../features'
             contexts:
+                - 'Behat\MinkExtension\Context\MinkContext'
                 - 'GameOfLife\Tests\Behat\FeatureContext'
