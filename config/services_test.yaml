@@ -5,3 +5,7 @@ services:
 
     GameOfLife\Tests\Behat\:
         resource: '../tests/Behat/'
+        exclude: '../tests/Behat/*Test.php'
+
+    GameOfLife\Tests\Behat\ColonyHistory\Parser:
+        public: true
