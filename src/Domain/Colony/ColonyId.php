@@ -8,12 +8,22 @@ use GameOfLife\Domain\Core\EntityIdInterface;
 
 class ColonyId implements EntityIdInterface
 {
+    private $id;
+
+    /**
+     * @param string $id
+     */
+    public function __construct(string $id)
+    {
+        $this->id = $id;
+    }
+
     /**
      * @return string
      */
     public function toString(): string
     {
-        return '59494a9a-32cc-481e-a4f1-093a8dcef162';
+        return $this->id;
     }
 
     /**
@@ -22,6 +32,6 @@ class ColonyId implements EntityIdInterface
      */
     public function equals(EntityIdInterface $other): bool
     {
-        return false;
+        return $other instanceof self && $other->toString() === $this->toString();
     }
 }

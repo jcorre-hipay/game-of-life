@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace GameOfLife\Domain\Colony;
 
 use GameOfLife\Domain\Event\DomainEventInterface;
+use GameOfLife\Domain\Exception\InvalidCellStateException;
 
 interface ColonyInterface
 {
@@ -16,6 +17,7 @@ interface ColonyInterface
     /**
      * @param DomainEventInterface[] $events
      * @return ColonyInterface
+     * @throws InvalidCellStateException
      */
     public function apply(array $events): ColonyInterface;
 

@@ -21,10 +21,16 @@ services:
     #                                                                                             #
 
     GameOfLife\Domain\Colony\ColonyFactoryInterface:
-        '@GameOfLife\Mock\FakeColonyFactory'
+        '@GameOfLife\Domain\Colony\ColonyFactory'
 
     GameOfLife\Domain\Colony\ColonyRepositoryInterface:
         '@GameOfLife\Mock\FakeColonyRepository'
+
+    GameOfLife\Domain\Colony\EvolveCellInterface:
+        '@GameOfLife\Domain\Colony\EvolveCell'
+
+    GameOfLife\Domain\Time\ClockInterface:
+        '@GameOfLife\Infrastructure\Time\UtcClock'
 
     #                                                                                             #
     # Infrastructure services                                                                     #
