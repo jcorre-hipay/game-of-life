@@ -13,19 +13,14 @@ use GameOfLife\Domain\Event\DomainEventInterface;
 
 class FakeColonyRepository implements ColonyRepositoryInterface
 {
-    private $colonies;
-
-    public function __construct()
-    {
-        $this->colonies = [];
-    }
+    private static $colonies = [];
 
     /**
      * @return ColonyId
      */
     public function nextId(): ColonyId
     {
-        return new ColonyId();
+        return new ColonyId('59494a9a-32cc-481e-a4f1-093a8dcef162');
     }
 
     /**
@@ -34,7 +29,7 @@ class FakeColonyRepository implements ColonyRepositoryInterface
      */
     public function getIdFromString(string $id): ColonyId
     {
-        return new ColonyId();
+        return new ColonyId($id);
     }
 
     /**
@@ -42,7 +37,7 @@ class FakeColonyRepository implements ColonyRepositoryInterface
      */
     public function findAll(): array
     {
-        return $this->colonies;
+        return static::$colonies;
     }
 
     /**
@@ -52,11 +47,11 @@ class FakeColonyRepository implements ColonyRepositoryInterface
      */
     public function find(ColonyId $id, ?int $generation = null): ?ColonyInterface
     {
-        if (!isset($this->colonies[$id->toString()])) {
+        if (!isset(static::$colonies[$id->toString()])) {
             return null;
         }
 
-        return $this->colonies[$id->toString()];
+        return static::$colonies[$id->toString()];
     }
 
     /**
@@ -65,7 +60,7 @@ class FakeColonyRepository implements ColonyRepositoryInterface
      */
     public function add(ColonyInterface $colony): ColonyCreated
     {
-        $this->colonies[$colony->getId()->toString()] = $colony;
+        static::$colonies[$colony->getId()->toString()] = $colony;
 
         return new ColonyCreated($colony->getId(), new \DateTimeImmutable(), $colony->getCellStates());
     }
@@ -76,8 +71,8 @@ class FakeColonyRepository implements ColonyRepositoryInterface
      */
     public function remove(ColonyId $id): ColonyDestroyed
     {
-        if (isset($this->colonies[$id->toString()])) {
-            unset($this->colonies[$id->toString()]);
+        if (isset(static::$colonies[$id->toString()])) {
+            unset(static::$colonies[$id->toString()]);
         }
 
         return new ColonyDestroyed($id, new \DateTimeImmutable());

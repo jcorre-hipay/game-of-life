@@ -36,10 +36,10 @@ class FeatureContext implements Context
     /**
      * @Given /^there is the colony "([^"]+)":$/
      */
-    public function thereIsTheColony(string $colonyId, PyStringNode $colony)
+    public function thereIsTheColony(string $colonyId, PyStringNode $colony): void
     {
         $colonyHistory = $this->parser->execute(new Builder(), $colony->getRaw());
-        Assert::assertCount(1, $colonyHistory, 'The PyString should represent only one colony.');
+        Assert::assertCount(1, $colonyHistory, 'The PyString should represent exactly one colony.');
 
         $this->colonyRepository->add(
             $this->colonyFactory->create(
@@ -54,10 +54,10 @@ class FeatureContext implements Context
     /**
      * @Then /^I should see the colony "([^"]+)" at generation ([0-9]+):$/
      */
-    public function iShouldSeeTheColonyAtGeneration(string $colonyId, string $generation, PyStringNode $colony)
+    public function iShouldSeeTheColonyAtGeneration(string $colonyId, string $generation, PyStringNode $colony): void
     {
         $expectedColonyHistory = $this->parser->execute(new Builder(), $colony->getRaw());
-        Assert::assertCount(1, $expectedColonyHistory, 'The PyString should represent only one colony.');
+        Assert::assertCount(1, $expectedColonyHistory, 'The PyString should represent exactly one colony.');
 
         $expectedColony = $expectedColonyHistory[0];
         $expectedColony['generation'] = $generation;
