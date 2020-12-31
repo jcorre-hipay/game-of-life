@@ -15,39 +15,13 @@
     </nav>
     <table id="colony">
         <tr>
-            <td class="cell dead-cell"></td>
-            <td class="cell dead-cell"></td>
-            <td class="cell live-cell"></td>
-            <td class="cell dead-cell"></td>
-            <td class="cell dead-cell"></td>
-        </tr>
-        <tr>
-            <td class="cell live-cell"></td>
-            <td class="cell live-cell"></td>
-            <td class="cell dead-cell"></td>
-            <td class="cell live-cell"></td>
-            <td class="cell dead-cell"></td>
-        </tr>
-        <tr>
-            <td class="cell dead-cell"></td>
-            <td class="cell live-cell"></td>
-            <td class="cell dead-cell"></td>
-            <td class="cell live-cell"></td>
-            <td class="cell dead-cell"></td>
-        </tr>
-        <tr>
-            <td class="cell dead-cell"></td>
-            <td class="cell dead-cell"></td>
-            <td class="cell dead-cell"></td>
-            <td class="cell live-cell"></td>
-            <td class="cell dead-cell"></td>
-        </tr>
-        <tr>
-            <td class="cell dead-cell"></td>
-            <td class="cell live-cell"></td>
-            <td class="cell live-cell"></td>
-            <td class="cell live-cell"></td>
-            <td class="cell dead-cell"></td>
+        {% for state in colony.cell_states %}
+            <td class="cell {{ state }}-cell"></td>
+            {% if not loop.last and loop.index is divisible by(colony.width) %}
+                </tr>
+                <tr>
+            {% endif %}
+        {% endfor %}
         </tr>
     </table>
 {% endblock body %}
