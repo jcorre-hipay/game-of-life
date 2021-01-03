@@ -35,3 +35,6 @@ services:
     #                                                                                             #
     # Infrastructure services                                                                     #
     #                                                                                             #
+
+    GameOfLife\Infrastructure\Logger\LoggerInterface:
+        '@GameOfLife\Infrastructure\Logger\PsrLoggerAdapter'
