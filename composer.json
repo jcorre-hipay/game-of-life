@@ -13,6 +13,7 @@
         "ext-pdo": "*",
         "doctrine/annotations": "^1.11",
         "jms/serializer-bundle": "^3.7",
+        "ramsey/uuid": "^4.1",
         "symfony/asset": "5.2.*",
         "symfony/console": "5.2.*",
         "symfony/dotenv": "5.2.*",

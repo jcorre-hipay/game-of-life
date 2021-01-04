@@ -46,6 +46,9 @@ services:
     GameOfLife\Infrastructure\Database\EventStoreInterface:
         '@GameOfLife\Infrastructure\Database\SqliteEventStore'
 
+    GameOfLife\Infrastructure\Identifier\GenerateEntityIdSeedInterface:
+        '@GameOfLife\Infrastructure\Identifier\GenerateUuid'
+
     GameOfLife\Infrastructure\Logger\LoggerInterface:
         '@GameOfLife\Infrastructure\Logger\PsrLoggerAdapter'
 
