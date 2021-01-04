@@ -38,3 +38,6 @@ services:
 
     GameOfLife\Infrastructure\Logger\LoggerInterface:
         '@GameOfLife\Infrastructure\Logger\PsrLoggerAdapter'
+
+    GameOfLife\Infrastructure\Serializer\SerializerInterface:
+        '@GameOfLife\Infrastructure\Serializer\JmsSerializerAdapter'

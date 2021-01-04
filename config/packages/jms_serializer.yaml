@@ -1,0 +1,19 @@
+jms_serializer:
+    handlers:
+        datetime:
+            default_format: 'Y-m-d\TH:i:sO'
+            default_timezone: UTC
+    default_context:
+        serialization:
+            serialize_null: true
+        deserialization:
+            serialize_null: true
+    visitors:
+        xml_serialization:
+            format_output: '%kernel.debug%'
+    metadata:
+        auto_detection: false
+        directories:
+            game-of-life:
+                namespace_prefix: 'GameOfLife'
+                path: '%kernel.project_dir%/config/serializer'
