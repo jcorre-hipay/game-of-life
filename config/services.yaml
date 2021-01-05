@@ -24,7 +24,7 @@ services:
         '@GameOfLife\Domain\Colony\ColonyFactory'
 
     GameOfLife\Domain\Colony\ColonyRepositoryInterface:
-        '@GameOfLife\Mock\FakeColonyRepository'
+        '@GameOfLife\Infrastructure\Colony\SqliteColonyRepository'
 
     GameOfLife\Domain\Colony\EvolveCellInterface:
         '@GameOfLife\Domain\Colony\EvolveCell'

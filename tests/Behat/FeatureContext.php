@@ -34,6 +34,16 @@ class FeatureContext implements Context
     }
 
     /**
+     * @AfterScenario
+     */
+    public function after()
+    {
+        foreach ($this->colonyRepository->findAll() as $colony) {
+            $this->colonyRepository->remove($colony->getId());
+        }
+    }
+
+    /**
      * @Given /^there is the colony "([^"]+)":$/
      */
     public function thereIsTheColony(string $colonyId, PyStringNode $colony): void

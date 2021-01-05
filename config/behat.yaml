@@ -3,7 +3,7 @@ default:
         progress: true
     extensions:
         FriendsOfBehat\SymfonyExtension:
-            bootstrap: ~
+            bootstrap: '%paths.base%/../tests/bootstrap.php'
             kernel:
                 class: 'GameOfLife\Infrastructure\Kernel'
                 path: ~

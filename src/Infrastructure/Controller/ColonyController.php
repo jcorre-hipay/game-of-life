@@ -35,7 +35,7 @@ class ColonyController extends AbstractController
                 'colonies' => [
                     [
                         'id' => '59494a9a-32cc-481e-a4f1-093a8dcef162',
-                        'generation' => 42,
+                        'generation' => 0,
                     ],
                     [
                         'id' => '4aea4bdb-c789-4945-8086-54bf22561c27',
