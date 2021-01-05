@@ -7,5 +7,11 @@ services:
         resource: '../tests/Behat/'
         exclude: '../tests/Behat/*Test.php'
 
+    GameOfLife\Domain\Colony\ColonyFactory:
+        public: true
+
+    GameOfLife\Infrastructure\Colony\SqliteColonyRepository:
+        public: true
+
     GameOfLife\Tests\Behat\ColonyHistory\Parser:
         public: true

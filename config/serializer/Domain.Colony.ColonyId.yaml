@@ -1,0 +1,5 @@
+GameOfLife\Domain\Colony\ColonyId:
+    exclusion_policy: ALL
+    properties:
+        id:
+            type: string

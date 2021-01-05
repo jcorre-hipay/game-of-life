@@ -6,6 +6,7 @@ namespace GameOfLife\Domain\Colony;
 
 use GameOfLife\Domain\Exception\InvalidCellStateException;
 use GameOfLife\Domain\Exception\InvalidColonyDimensionException;
+use GameOfLife\Domain\Exception\InvalidGenerationException;
 
 interface ColonyFactoryInterface
 {
@@ -19,4 +20,23 @@ interface ColonyFactoryInterface
      * @throws InvalidColonyDimensionException
      */
     public function create(ColonyId $id, int $width, int $height, array $cellStates): ColonyInterface;
+
+    /**
+     * @param ColonyId $id
+     * @param int $generation
+     * @param int $width
+     * @param int $height
+     * @param array $cellStates
+     * @return ColonyInterface
+     * @throws InvalidCellStateException
+     * @throws InvalidColonyDimensionException
+     * @throws InvalidGenerationException
+     */
+    public function createAtGeneration(
+        ColonyId $id,
+        int $generation,
+        int $width,
+        int $height,
+        array $cellStates
+    ): ColonyInterface;
 }

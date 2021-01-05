@@ -1,0 +1,20 @@
+GameOfLife\Domain\Event\ColonyCreated:
+    exclusion_policy: ALL
+    properties:
+        colonyId:
+            type: GameOfLife\Domain\Colony\ColonyId
+
+        eventDate:
+            type: DateTimeInterface
+
+        generation:
+            type: int
+
+        width:
+            type: int
+
+        height:
+            type: int
+
+        cellStates:
+            type: array<string>

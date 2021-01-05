@@ -1,0 +1,8 @@
+GameOfLife\Domain\Event\ColonyDestroyed:
+    exclusion_policy: ALL
+    properties:
+        colonyId:
+            type: GameOfLife\Domain\Colony\ColonyId
+
+        eventDate:
+            type: DateTimeInterface
