@@ -72,3 +72,6 @@ services:
 
     GameOfLife\Infrastructure\Serializer\SerializerInterface:
         '@GameOfLife\Infrastructure\Serializer\JmsSerializerAdapter'
+
+    GameOfLife\Infrastructure\Validator\ValidatorInterface:
+        '@GameOfLife\Infrastructure\Validator\SymfonyValidatorAdapter'
