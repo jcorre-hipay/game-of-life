@@ -10,6 +10,15 @@ services:
     GameOfLife\Domain\Colony\ColonyFactory:
         public: true
 
+    GameOfLife\Domain\Colony\EvolveCell:
+        public: true
+
+    GameOfLife\Infrastructure\Bus\CommandBus:
+        public: true
+
+    GameOfLife\Infrastructure\Bus\QueryBus:
+        public: true
+
     GameOfLife\Infrastructure\Colony\SqliteColonyRepository:
         public: true
 

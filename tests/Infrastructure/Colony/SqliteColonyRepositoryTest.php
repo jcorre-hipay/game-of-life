@@ -7,7 +7,6 @@ namespace GameOfLife\Tests\Infrastructure\Colony;
 use GameOfLife\Domain\Colony\ColonyFactoryInterface;
 use GameOfLife\Domain\Event\CellBorn;
 use GameOfLife\Domain\Event\CellDied;
-use GameOfLife\Domain\Event\ColonyDestroyed;
 use GameOfLife\Domain\Event\GenerationEnded;
 use GameOfLife\Domain\Exception\ColonyAlreadyExistsException;
 use GameOfLife\Domain\Exception\ColonyDoesNotExistException;

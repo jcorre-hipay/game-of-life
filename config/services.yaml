@@ -39,6 +39,15 @@ services:
     GameOfLife\Infrastructure\Bus\ApplicationBusInterface:
         '@GameOfLife\Infrastructure\Bus\DispatcherBus'
 
+    GameOfLife\Infrastructure\Bus\DispatcherBus:
+        calls:
+            -
+                method: register
+                arguments: ['@GameOfLife\Application\Command\Colony\EvolveColony']
+            -
+                method: register
+                arguments: ['@GameOfLife\Application\Query\Colony\GetColony']
+
     GameOfLife\Infrastructure\Bus\CommandBusInterface:
         '@GameOfLife\Infrastructure\Bus\CommandBus'
 
