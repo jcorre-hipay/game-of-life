@@ -36,6 +36,15 @@ services:
     # Infrastructure services                                                                     #
     #                                                                                             #
 
+    GameOfLife\Infrastructure\Bus\ApplicationBusInterface:
+        '@GameOfLife\Infrastructure\Bus\DispatcherBus'
+
+    GameOfLife\Infrastructure\Bus\CommandBusInterface:
+        '@GameOfLife\Infrastructure\Bus\CommandBus'
+
+    GameOfLife\Infrastructure\Bus\QueryBusInterface:
+        '@GameOfLife\Infrastructure\Bus\QueryBus'
+
     GameOfLife\Infrastructure\Database\ConnectionInterface:
         '@GameOfLife\Infrastructure\Database\PdoConnection'
 
