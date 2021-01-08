@@ -7,6 +7,7 @@ namespace GameOfLife\Tests\Application\Command\Colony;
 use GameOfLife\Application\Command\Colony\EvolveColonyCommand;
 use GameOfLife\Application\Command\DomainEventCollection;
 use GameOfLife\Application\Exception\ColonyNotFoundException;
+use GameOfLife\Application\Exception\InvalidParametersException;
 use GameOfLife\Domain\Colony\ColonyFactoryInterface;
 use GameOfLife\Domain\Colony\ColonyInterface;
 use GameOfLife\Domain\Colony\ColonyRepositoryInterface;
@@ -102,6 +103,24 @@ class EvolveColonyTest extends KernelTestCase
             $this->commandBus->send($command);
         } catch (ColonyNotFoundException $exception) {
             Assert::assertSame('Cannot find colony 4aea4bdb-c789-4945-8086-54bf22561c27.', $exception->getMessage());
+
+            return;
+        }
+
+        Assert::fail('Fail asserting an exception has been thrown.');
+    }
+
+    /**
+     * @test
+     */
+    public function itThrowsAnExceptionWhenCommandIsNotValid(): void
+    {
+        $command = new EvolveColonyCommand('1224');
+
+        try {
+            $this->commandBus->send($command);
+        } catch (InvalidParametersException $exception) {
+            Assert::assertSame(['The colony id should follow the uuid format.'], $exception->getErrors());
 
             return;
         }

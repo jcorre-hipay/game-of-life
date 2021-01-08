@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace GameOfLife\Tests\Application\Query\Colony;
 
+use GameOfLife\Application\Exception\InvalidParametersException;
 use GameOfLife\Application\Query\Colony\Colony;
 use GameOfLife\Application\Query\Colony\ColonyResult;
 use GameOfLife\Application\Query\Colony\GetColonyQuery;
@@ -137,5 +138,29 @@ class GetColonyTest extends KernelTestCase
 
         Assert::assertInstanceOf(ColonyResult::class, $result);
         Assert::assertCount(0, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function itThrowsAnExceptionWhenTheQueryIsNotValid(): void
+    {
+        $command = new GetColonyQuery('1224', -1);
+
+        try {
+            $this->queryBus->send($command);
+        } catch (InvalidParametersException $exception) {
+            Assert::assertSame(
+                [
+                    'The colony id should follow the uuid format.',
+                    'The generation should be a positive or nul number.',
+                ],
+                $exception->getErrors()
+            );
+
+            return;
+        }
+
+        Assert::fail('Fail asserting an exception has been thrown.');
     }
 }

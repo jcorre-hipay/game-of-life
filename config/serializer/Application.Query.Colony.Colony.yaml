@@ -1,0 +1,9 @@
+GameOfLife\Application\Query\Colony\Colony:
+    exclusion_policy: ALL
+    virtual_properties:
+        getId:
+            serialized_name: colony_id
+            type: string
+        getGeneration:
+            serialized_name: generation
+            type: integer

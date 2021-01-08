@@ -10,7 +10,7 @@ class GenerateUuidSpec extends ObjectBehavior
 {
     function it_generates_a_uuid()
     {
-        $this->execute()->shouldMatch('/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/');
+        $this->execute()->shouldMatch('/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/');
     }
 
     function it_generates_unique_identifiers()

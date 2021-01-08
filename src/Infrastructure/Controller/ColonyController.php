@@ -4,22 +4,28 @@ declare(strict_types=1);
 
 namespace GameOfLife\Infrastructure\Controller;
 
-use GameOfLife\Domain\Colony\ColonyRepositoryInterface;
-use GameOfLife\Domain\Colony\EvolveCellInterface;
+use GameOfLife\Application\Command\Colony\EvolveColonyCommand;
+use GameOfLife\Application\Query\Colony\Colony;
+use GameOfLife\Application\Query\Colony\GetColonyQuery;
+use GameOfLife\Infrastructure\Bus\CommandBusInterface;
+use GameOfLife\Infrastructure\Bus\QueryBusInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ColonyController extends AbstractController
 {
-    private $repository;
+    private $commandBus;
+    private $queryBus;
 
     /**
-     * @param ColonyRepositoryInterface $repository
+     * @param CommandBusInterface $commandBus
+     * @param QueryBusInterface $queryBus
      */
-    public function __construct(ColonyRepositoryInterface $repository)
+    public function __construct(CommandBusInterface $commandBus, QueryBusInterface $queryBus)
     {
-        $this->repository = $repository;
+        $this->commandBus = $commandBus;
+        $this->queryBus = $queryBus;
     }
 
     /**
@@ -59,13 +65,17 @@ class ColonyController extends AbstractController
      */
     public function show(string $id, int $generation): Response
     {
-        $colony = $this->repository->find($this->repository->getIdFromString($id), $generation);
+        $query = new GetColonyQuery($id, $generation);
+        $result = $this->queryBus->send($query);
+
+        /** @var Colony $colony */
+        $colony = \current($result);
 
         return $this->render(
             'colony/show.html.twig',
             [
                 'colony' => [
-                    'id' => $colony->getId()->toString(),
+                    'id' => $colony->getId(),
                     'generation' => $colony->getGeneration(),
                     'width' => $colony->getWidth(),
                     'height' => $colony->getHeight(),
@@ -78,22 +88,24 @@ class ColonyController extends AbstractController
     /**
      * @Route("/colony/{id}", methods={"POST"}, name="evolve_colony")
      *
-     * @param EvolveCellInterface $evolveCell
      * @param string $id
      * @return Response
      */
-    public function evolve(EvolveCellInterface $evolveCell, string $id): Response
+    public function evolve(string $id): Response
     {
-        $colony = $this->repository->find($this->repository->getIdFromString($id));
-        $this->repository->remove($colony->getId());
+        $command = new EvolveColonyCommand($id);
+        $this->commandBus->send($command);
 
-        $colony = $colony->apply($colony->evolve($evolveCell));
-        $this->repository->add($colony);
+        $query = new GetColonyQuery($id);
+        $result = $this->queryBus->send($query);
+
+        /** @var Colony $colony */
+        $colony = \current($result);
 
         return $this->redirectToRoute(
             'show_colony',
             [
-                'id' => $colony->getId()->toString(),
+                'id' => $colony->getId(),
                 'generation' => $colony->getGeneration(),
             ]
         );
