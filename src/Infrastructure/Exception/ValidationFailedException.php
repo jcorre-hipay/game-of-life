@@ -9,7 +9,7 @@ class ValidationFailedException extends InfrastructureException
     private $violations;
 
     /**
-     * @param array $violations
+     * @param string[] $violations
      * @param string $message
      * @param int $code
      * @param \Throwable|null $previous
@@ -26,7 +26,7 @@ class ValidationFailedException extends InfrastructureException
     }
 
     /**
-     * @return array
+     * @return string[]
      */
     public function getViolations(): array
     {

@@ -48,6 +48,18 @@ services:
                 method: register
                 arguments: ['@GameOfLife\Application\Query\Colony\GetColony']
 
+    GameOfLife\Infrastructure\Bus\LoggerBus:
+        decorates: GameOfLife\Infrastructure\Bus\DispatcherBus
+        decoration_priority: 1
+
+    GameOfLife\Infrastructure\Bus\ExceptionFilterBus:
+        decorates: GameOfLife\Infrastructure\Bus\DispatcherBus
+        decoration_priority: 2
+
+    GameOfLife\Infrastructure\Bus\ValidatorBus:
+        decorates: GameOfLife\Infrastructure\Bus\DispatcherBus
+        decoration_priority: 3
+
     GameOfLife\Infrastructure\Bus\CommandBusInterface:
         '@GameOfLife\Infrastructure\Bus\CommandBus'
 
