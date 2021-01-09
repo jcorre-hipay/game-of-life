@@ -1,4 +1,5 @@
 framework:
     secret: '%env(APP_SECRET)%'
+    error_controller: GameOfLife\Infrastructure\Controller\ErrorController::index
     php_errors:
         log: true

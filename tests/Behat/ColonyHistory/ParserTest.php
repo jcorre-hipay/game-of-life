@@ -15,6 +15,7 @@ class ParserTest extends KernelTestCase
 
     protected function setUp(): void
     {
+        parent::setUp();
         static::bootKernel();
 
         $this->subject = static::$container->get(Parser::class);

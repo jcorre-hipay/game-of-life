@@ -33,6 +33,7 @@ class EvolveColonyTest extends KernelTestCase
 
     protected function setUp(): void
     {
+        parent::setUp();
         static::bootKernel();
 
         $this->commandBus = static::$container->get(CommandBusInterface::class);
@@ -52,6 +53,8 @@ class EvolveColonyTest extends KernelTestCase
             $this->repository->remove($this->repository->getIdFromString('59494a9a-32cc-481e-a4f1-093a8dcef162'));
         } catch (ColonyDoesNotExistException $exception) {
         }
+
+        parent::tearDown();
     }
 
     /**

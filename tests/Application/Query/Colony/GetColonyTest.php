@@ -30,6 +30,7 @@ class GetColonyTest extends KernelTestCase
 
     protected function setUp(): void
     {
+        parent::setUp();
         static::bootKernel();
 
         $this->queryBus = static::$container->get(QueryBusInterface::class);
@@ -56,6 +57,8 @@ class GetColonyTest extends KernelTestCase
             $this->repository->remove($this->repository->getIdFromString('59494a9a-32cc-481e-a4f1-093a8dcef162'));
         } catch (ColonyDoesNotExistException $exception) {
         }
+
+        parent::tearDown();
     }
 
     /**

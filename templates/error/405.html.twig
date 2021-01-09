@@ -1,0 +1,10 @@
+{% extends '/layout.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" media="screen" href="{{ asset('styles/error/index.css') }}"/>
+{% endblock %}
+
+{% block body %}
+    <h1>405</h1>
+    <p>The method you are using is forbidden for this kind of resource.</p>
+{% endblock body %}

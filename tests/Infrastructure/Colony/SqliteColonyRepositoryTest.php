@@ -33,6 +33,7 @@ class SqliteColonyRepositoryTest extends KernelTestCase
 
     protected function setUp(): void
     {
+        parent::setUp();
         static::bootKernel();
 
         $this->subject = static::$container->get(SqliteColonyRepository::class);
@@ -51,6 +52,8 @@ class SqliteColonyRepositoryTest extends KernelTestCase
             ->connection
             ->prepare('DELETE FROM events WHERE entity_id = :id')
             ->execute(['id' => '59494a9a-32cc-481e-a4f1-093a8dcef162']);
+
+        parent::tearDown();
     }
 
     /**

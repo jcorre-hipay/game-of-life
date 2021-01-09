@@ -5,7 +5,11 @@ declare(strict_types=1);
 namespace GameOfLife\Infrastructure\Controller;
 
 use GameOfLife\Application\Command\Colony\EvolveColonyCommand;
+use GameOfLife\Application\Exception\ApplicationException;
+use GameOfLife\Application\Exception\ColonyNotFoundException;
+use GameOfLife\Application\Exception\InvalidParametersException;
 use GameOfLife\Application\Query\Colony\Colony;
+use GameOfLife\Application\Query\Colony\ColonyResult;
 use GameOfLife\Application\Query\Colony\GetColonyQuery;
 use GameOfLife\Infrastructure\Bus\CommandBusInterface;
 use GameOfLife\Infrastructure\Bus\QueryBusInterface;
@@ -62,11 +66,21 @@ class ColonyController extends AbstractController
      * @param string $id
      * @param int $generation
      * @return Response
+     * @throws ApplicationException
      */
     public function show(string $id, int $generation): Response
     {
-        $query = new GetColonyQuery($id, $generation);
-        $result = $this->queryBus->send($query);
+        try {
+            /** @var ColonyResult $result */
+            $result = $this->queryBus->send(new GetColonyQuery($id, $generation));
+
+        } catch (InvalidParametersException $exception) {
+            throw $this->createNotFoundException('Not Found', $exception);
+        }
+
+        if (0 === \count($result)) {
+            throw $this->createNotFoundException();
+        }
 
         /** @var Colony $colony */
         $colony = \current($result);
@@ -90,14 +104,22 @@ class ColonyController extends AbstractController
      *
      * @param string $id
      * @return Response
+     * @throws ApplicationException
      */
     public function evolve(string $id): Response
     {
-        $command = new EvolveColonyCommand($id);
-        $this->commandBus->send($command);
+        try {
+            /** @var ColonyResult $result */
+            $this->commandBus->send(new EvolveColonyCommand($id));
+            $result = $this->queryBus->send(new GetColonyQuery($id));
 
-        $query = new GetColonyQuery($id);
-        $result = $this->queryBus->send($query);
+        } catch (InvalidParametersException|ColonyNotFoundException $exception) {
+            throw $this->createNotFoundException('Not Found', $exception);
+        }
+
+        if (0 === \count($result)) {
+            throw $this->createNotFoundException();
+        }
 
         /** @var Colony $colony */
         $colony = \current($result);
