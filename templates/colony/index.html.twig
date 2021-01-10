@@ -19,7 +19,5 @@
         </tr>
         {% endfor %}
     </table>
-    <form method="post" action="#">
-        <input type="submit" class="button" value="new"/>
-    </form>
+    <a href="{{ url('new_colony') }}" class="button">new</a>
 {% endblock body %}

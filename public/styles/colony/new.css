@@ -1,0 +1,31 @@
+form > p {
+    margin: 20px 0;
+}
+
+.form-error {
+    color: #d5201b;
+    font-size: 80%;
+    font-weight: bold;
+}
+
+.form-info {
+    color: #7f859b;
+    font-size: 80%;
+    font-style: italic;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+}
+
+input[type=text] {
+    border: 1px solid #bfc6dd;
+    border-radius: 4px;
+    padding: 5px;
+    width: 110px;
+}
+
+input[type=text]:focus {
+    border-color: #1e8e3e;
+}

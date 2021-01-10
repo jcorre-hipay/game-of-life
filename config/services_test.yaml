@@ -19,8 +19,20 @@ services:
     GameOfLife\Infrastructure\Bus\QueryBus:
         public: true
 
+    GameOfLife\Infrastructure\Colony\GenerateCellStateInterface:
+        '@GameOfLife\Tests\Mock\Infrastructure\Colony\GeneratePredictableCellState'
+
     GameOfLife\Infrastructure\Colony\SqliteColonyRepository:
         public: true
 
+    GameOfLife\Infrastructure\Identifier\GenerateEntityIdSeedInterface:
+        '@GameOfLife\Tests\Mock\Infrastructure\Identifier\GeneratePredictableEntityIdSeed'
+
     GameOfLife\Tests\Behat\ColonyHistory\Parser:
+        public: true
+
+    GameOfLife\Tests\Mock\Infrastructure\Colony\GeneratePredictableCellState:
+        public: true
+
+    GameOfLife\Tests\Mock\Infrastructure\Identifier\GeneratePredictableEntityIdSeed:
         public: true

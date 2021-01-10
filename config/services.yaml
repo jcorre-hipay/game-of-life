@@ -43,6 +43,9 @@ services:
         calls:
             -
                 method: register
+                arguments: ['@GameOfLife\Application\Command\Colony\CreateColony']
+            -
+                method: register
                 arguments: ['@GameOfLife\Application\Command\Colony\EvolveColony']
             -
                 method: register
@@ -65,6 +68,9 @@ services:
 
     GameOfLife\Infrastructure\Bus\QueryBusInterface:
         '@GameOfLife\Infrastructure\Bus\QueryBus'
+
+    GameOfLife\Infrastructure\Colony\GenerateCellStateInterface:
+        '@GameOfLife\Infrastructure\Colony\GenerateRandomCellState'
 
     GameOfLife\Infrastructure\Database\ConnectionInterface:
         '@GameOfLife\Infrastructure\Database\PdoConnection'

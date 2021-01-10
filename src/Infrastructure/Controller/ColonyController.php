@@ -4,16 +4,21 @@ declare(strict_types=1);
 
 namespace GameOfLife\Infrastructure\Controller;
 
+use GameOfLife\Application\Command\Colony\CreateColonyCommand;
 use GameOfLife\Application\Command\Colony\EvolveColonyCommand;
+use GameOfLife\Application\Command\DomainEventCollection;
 use GameOfLife\Application\Exception\ApplicationException;
 use GameOfLife\Application\Exception\ColonyNotFoundException;
 use GameOfLife\Application\Exception\InvalidParametersException;
 use GameOfLife\Application\Query\Colony\Colony;
 use GameOfLife\Application\Query\Colony\ColonyResult;
 use GameOfLife\Application\Query\Colony\GetColonyQuery;
+use GameOfLife\Domain\Event\ColonyCreated;
 use GameOfLife\Infrastructure\Bus\CommandBusInterface;
 use GameOfLife\Infrastructure\Bus\QueryBusInterface;
+use GameOfLife\Infrastructure\Colony\GenerateCellStateInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -97,6 +102,62 @@ class ColonyController extends AbstractController
                 ],
             ]
         );
+    }
+
+    /**
+     * @Route("/colony/new", methods={"GET"}, name="new_colony")
+     *
+     * @param Request $request
+     * @return Response
+     */
+    public function new(Request $request): Response
+    {
+        return $this->render('colony/new.html.twig', ['errors' => $request->query->get('errors', [])]);
+    }
+
+    /**
+     * @Route("/colony", methods={"POST"}, name="create_colony")
+     *
+     * @param GenerateCellStateInterface $generator
+     * @param Request $request
+     * @return Response
+     * @throws ApplicationException
+     */
+    public function create(GenerateCellStateInterface $generator, Request $request): Response
+    {
+        $width = \intval($request->request->get('width', 0));
+        $height = \intval($request->request->get('height', 0));
+
+        $cellStates = [];
+        $size = $width * $height;
+        for ($index = 0; $index < $size; $index++) {
+            $cellStates[] = $generator->execute();
+        }
+
+        $redirectionParameters = [];
+
+        try {
+            /** @var DomainEventCollection $events */
+            $events = $this->commandBus->send(new CreateColonyCommand($width, $height, $cellStates));
+
+            foreach ($events as $event) {
+                if (!$event instanceof ColonyCreated) {
+                    continue;
+                }
+
+                return $this->redirectToRoute(
+                    'show_colony',
+                    [
+                        'id' => $event->getEntityId()->toString(),
+                        'generation' => $event->getGeneration(),
+                    ]
+                );
+            }
+        } catch (InvalidParametersException $exception) {
+            $redirectionParameters['errors'] = $exception->getErrors();
+        }
+
+        return $this->redirectToRoute('new_colony', $redirectionParameters);
     }
 
     /**

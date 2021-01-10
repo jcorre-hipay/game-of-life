@@ -1,0 +1,26 @@
+{% extends '/layout.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" media="screen" href="{{ asset('styles/colony/new.css') }}"/>
+{% endblock %}
+
+{% block body %}
+    <h1>New colony</h1>
+    <form method="post" action="{{ url('create_colony') }}">
+        {% for error in errors %}
+            <p class="form-error">{{ error }}</p>
+        {% endfor %}
+        <p class="form-info">It is not recommended to exceed a size of 30x30 cells.</p>
+        <p>
+            <label for="colony-width">Width</label>
+            <input type="text" id="colony-width" name="width" tabindex="1"/>
+        </p>
+        <p>
+            <label for="colony-height">Height</label>
+            <input type="text" id="colony-height" name="height" tabindex="2"/>
+        </p>
+        <p>
+            <input type="submit" class="button" tabindex="3" value="create"/>
+        </p>
+    </form>
+{% endblock body %}

@@ -12,6 +12,8 @@ use GameOfLife\Domain\Colony\ColonyFactoryInterface;
 use GameOfLife\Domain\Colony\ColonyRepositoryInterface;
 use GameOfLife\Tests\Behat\ColonyHistory\Builder;
 use GameOfLife\Tests\Behat\ColonyHistory\Parser;
+use GameOfLife\Tests\Mock\Infrastructure\Colony\GeneratePredictableCellState;
+use GameOfLife\Tests\Mock\Infrastructure\Identifier\GeneratePredictableEntityIdSeed;
 use PHPUnit\Framework\Assert;
 
 class FeatureContext implements Context
@@ -20,17 +22,23 @@ class FeatureContext implements Context
     private $parser;
     private $colonyFactory;
     private $colonyRepository;
+    private $uuidGenerator;
+    private $cellStateGenerator;
 
     public function __construct(
         Session $session,
         Parser $parser,
         ColonyFactoryInterface $colonyFactory,
-        ColonyRepositoryInterface $colonyRepository
+        ColonyRepositoryInterface $colonyRepository,
+        GeneratePredictableEntityIdSeed $uuidGenerator,
+        GeneratePredictableCellState $cellStateGenerator
     ) {
         $this->session = $session;
         $this->parser = $parser;
         $this->colonyFactory = $colonyFactory;
         $this->colonyRepository = $colonyRepository;
+        $this->uuidGenerator = $uuidGenerator;
+        $this->cellStateGenerator = $cellStateGenerator;
     }
 
     /**
@@ -59,6 +67,29 @@ class FeatureContext implements Context
                 $colonyHistory[0]['cell_states']
             )
         );
+    }
+
+    /**
+     * @Given /^the next generated UUID will be "([^"]+)"$/
+     */
+    public function theNextGeneratedUUIDWillBe(string $uuid): void
+    {
+        $this->uuidGenerator->set([$uuid]);
+    }
+
+    /**
+     * @Given /^the next generated colony will be:$/
+     */
+    public function theNextGeneratedColonyWillBe(PyStringNode $colony): void
+    {
+        $colonyHistory = $this->parser->execute(new Builder(), $colony->getRaw());
+
+        $sequence = [];
+        foreach ($colonyHistory as $snapshot) {
+            $sequence = \array_merge($sequence, $snapshot['cell_states']);
+        }
+
+        $this->cellStateGenerator->set($sequence);
     }
 
     /**
