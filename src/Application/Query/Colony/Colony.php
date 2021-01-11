@@ -9,13 +9,16 @@ use GameOfLife\Domain\Colony\ColonyInterface;
 class Colony
 {
     private $colony;
+    private $lastGeneration;
 
     /**
      * @param ColonyInterface $colony
+     * @param int $lastGeneration
      */
-    public function __construct(ColonyInterface $colony)
+    public function __construct(ColonyInterface $colony, int $lastGeneration)
     {
         $this->colony = $colony;
+        $this->lastGeneration = $lastGeneration;
     }
 
     /**
@@ -32,6 +35,14 @@ class Colony
     public function getGeneration(): int
     {
         return $this->colony->getGeneration();
+    }
+
+    /**
+     * @return int
+     */
+    public function getLastGeneration(): int
+    {
+        return $this->lastGeneration;
     }
 
     /**

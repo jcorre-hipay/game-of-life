@@ -10,8 +10,10 @@ use GameOfLife\Application\Exception\TechnicalException;
 use GameOfLife\Application\Query\QueryHandlerInterface;
 use GameOfLife\Application\Query\QueryInterface;
 use GameOfLife\Application\Query\ResultInterface;
+use GameOfLife\Domain\Colony\ColonyId;
 use GameOfLife\Domain\Colony\ColonyInterface;
 use GameOfLife\Domain\Colony\ColonyRepositoryInterface;
+use GameOfLife\Domain\Exception\ColonyDoesNotExistException;
 use GameOfLife\Domain\Exception\RepositoryNotAvailableException;
 
 class GetColony implements QueryHandlerInterface
@@ -46,16 +48,35 @@ class GetColony implements QueryHandlerInterface
         }
 
         try {
+            $colonyId = $this->repository->getIdFromString($query->getColonyId());
+
             $colony = $this->repository->find(
                 $this->repository->getIdFromString($query->getColonyId()),
                 $query->getGeneration()
             );
 
-            $result = $colony instanceof ColonyInterface ? [new Colony($colony)] : [];
-
-            return new ColonyResult($result);
+            return new ColonyResult($this->buildColonyResultData($colonyId, $colony));
         } catch (RepositoryNotAvailableException $exception) {
             throw new TechnicalException('Colony repository is not available.', 0, $exception);
+        }
+    }
+
+    /**
+     * @param ColonyId $colonyId
+     * @param ColonyInterface|null $colony
+     * @return array
+     * @throws RepositoryNotAvailableException
+     */
+    private function buildColonyResultData(ColonyId $colonyId, ?ColonyInterface $colony): array
+    {
+        if (!$colony instanceof ColonyInterface) {
+            return [];
+        }
+
+        try {
+            return [new Colony($colony, $this->repository->getLastGeneration($colonyId))];
+        } catch (ColonyDoesNotExistException $exception) {
+            return [];
         }
     }
 }

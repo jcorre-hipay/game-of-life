@@ -41,6 +41,14 @@ interface ColonyRepositoryInterface
     public function find(ColonyId $id, ?int $generation = null): ?ColonyInterface;
 
     /**
+     * @param ColonyId $id
+     * @return int
+     * @throws RepositoryNotAvailableException
+     * @throws ColonyDoesNotExistException
+     */
+    public function getLastGeneration(ColonyId $id): int;
+
+    /**
      * @param ColonyInterface $colony
      * @return ColonyCreated
      * @throws RepositoryNotAvailableException

@@ -339,6 +339,42 @@ class SqliteColonyRepositorySpec extends ObjectBehavior
             );
     }
 
+    function it_returns_the_last_generation_of_a_colony(
+        ConnectionInterface $connection,
+        ColonyId $id
+    ) {
+        $id->toString()->willReturn('59494a9a-32cc-481e-a4f1-093a8dcef162');
+
+        $connection
+            ->query(
+                'SELECT generation FROM colonies WHERE id = :id',
+                [
+                    'id' => '59494a9a-32cc-481e-a4f1-093a8dcef162',
+                ]
+            )
+            ->willReturn([['generation' => '42']]);
+
+        $this->getLastGeneration($id)->shouldReturn(42);
+    }
+
+    function it_throws_an_exception_when_searching_for_the_last_generation_of_a_colony_that_not_exists(
+        ConnectionInterface $connection,
+        ColonyId $id
+    ) {
+        $id->toString()->willReturn('59494a9a-32cc-481e-a4f1-093a8dcef162');
+
+        $connection
+            ->query(
+                'SELECT generation FROM colonies WHERE id = :id',
+                [
+                    'id' => '59494a9a-32cc-481e-a4f1-093a8dcef162',
+                ]
+            )
+            ->willReturn([]);
+
+        $this->shouldThrow(ColonyDoesNotExistException::class)->during('getLastGeneration', [$id]);
+    }
+
     function it_removes_all_domain_events_related_to_a_colony(
         EventStoreInterface $eventStore,
         ConnectionInterface $connection,
@@ -357,7 +393,7 @@ class SqliteColonyRepositorySpec extends ObjectBehavior
                     'id' => '59494a9a-32cc-481e-a4f1-093a8dcef162',
                 ]
             )
-            ->willReturn(['id' => '59494a9a-32cc-481e-a4f1-093a8dcef162']);
+            ->willReturn([['id' => '59494a9a-32cc-481e-a4f1-093a8dcef162']]);
 
         $connection
             ->execute('DELETE FROM colonies WHERE id = :id', ['id' => '59494a9a-32cc-481e-a4f1-093a8dcef162'])
@@ -483,6 +519,7 @@ class SqliteColonyRepositorySpec extends ObjectBehavior
         $this->shouldThrow(RepositoryNotAvailableException::class)->during('add', [$colony]);
         $this->shouldThrow(RepositoryNotAvailableException::class)->during('find', [$id]);
         $this->shouldThrow(RepositoryNotAvailableException::class)->during('findAll', []);
+        $this->shouldThrow(RepositoryNotAvailableException::class)->during('getLastGeneration', [$id]);
         $this->shouldThrow(RepositoryNotAvailableException::class)->during('remove', [$id]);
         $this->shouldThrow(RepositoryNotAvailableException::class)->during('commit', [[$event]]);
     }

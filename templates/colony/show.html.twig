@@ -7,10 +7,20 @@
 {% block body %}
     <h1>Colony {{ colony.id }}</h1>
     <nav class="control-bar">
-        <form class="float-right" method="post" action="{{ url('evolve_colony', {'id': colony.id}) }}">
-            <input type="submit" class="button" tabindex="2" value="next"/>
-        </form>
-        <a href="#" class="button float-left" tabindex="1">previous</a>
+        <div class="button-container float-right">
+        {% if has_next_generation %}
+            <a href="{{ url('show_colony', {'id': colony.id, 'generation': colony.generation + 1}) }}" class="button" tabindex="2">next</a>
+        {% else %}
+            <form method="post" action="{{ url('evolve_colony', {'id': colony.id}) }}">
+                <input type="submit" class="button" tabindex="2" value="next"/>
+            </form>
+        {% endif %}
+        </div>
+        <div class="button-container float-left">
+        {% if has_previous_generation %}
+            <a href="{{ url('show_colony', {'id': colony.id, 'generation': colony.generation - 1}) }}" class="button" tabindex="1">previous</a>
+        {% endif %}
+        </div>
         <span id="colony-generation">{{ colony.generation }}</span>
     </nav>
     <table id="colony">

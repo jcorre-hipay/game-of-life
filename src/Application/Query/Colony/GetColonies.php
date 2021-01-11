@@ -49,7 +49,7 @@ class GetColonies implements QueryHandlerInterface
             return new ColonyResult(
                 \array_map(
                     function (ColonyInterface $colony): Colony {
-                        return new Colony($colony);
+                        return new Colony($colony, $colony->getGeneration());
                     },
                     $this->repository->findAll()
                 )

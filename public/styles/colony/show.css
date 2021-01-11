@@ -4,6 +4,12 @@
     text-align: center;
 }
 
+.button-container {
+    display: inline-block;
+    height: 40px;
+    width: 120px;
+}
+
 #colony-generation {
     font-size: 140%;
     font-weight: bold;

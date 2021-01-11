@@ -13,6 +13,7 @@ use GameOfLife\Application\Query\QueryInterface;
 use GameOfLife\Domain\Colony\ColonyId;
 use GameOfLife\Domain\Colony\ColonyInterface;
 use GameOfLife\Domain\Colony\ColonyRepositoryInterface;
+use GameOfLife\Domain\Exception\ColonyDoesNotExistException;
 use GameOfLife\Domain\Exception\RepositoryNotAvailableException;
 use PhpSpec\ObjectBehavior;
 
@@ -45,8 +46,9 @@ class GetColonySpec extends ObjectBehavior
 
         $repository->getIdFromString('59494a9a-32cc-481e-a4f1-093a8dcef162')->willReturn($colonyId);
         $repository->find($colonyId, 42)->willReturn($colony);
+        $repository->getLastGeneration($colonyId)->willReturn(51);
 
-        $this->execute($query)->shouldBeLike(new ColonyResult([new Colony($colony->getWrappedObject())]));
+        $this->execute($query)->shouldBeLike(new ColonyResult([new Colony($colony->getWrappedObject(), 51)]));
     }
 
     function it_returns_an_empty_result_when_the_colony_cannot_be_found(
@@ -59,6 +61,22 @@ class GetColonySpec extends ObjectBehavior
 
         $repository->getIdFromString('59494a9a-32cc-481e-a4f1-093a8dcef162')->willReturn($colonyId);
         $repository->find($colonyId, 42)->willReturn(null);
+
+        $this->execute($query)->shouldBeLike(new ColonyResult([]));
+    }
+
+    function it_returns_an_empty_result_when_the_colony_suddenly_disappears(
+        ColonyRepositoryInterface $repository,
+        GetColonyQuery $query,
+        ColonyInterface $colony,
+        ColonyId $colonyId
+    ) {
+        $query->getColonyId()->willReturn('59494a9a-32cc-481e-a4f1-093a8dcef162');
+        $query->getGeneration()->willReturn(42);
+
+        $repository->getIdFromString('59494a9a-32cc-481e-a4f1-093a8dcef162')->willReturn($colonyId);
+        $repository->find($colonyId, 42)->willReturn($colony);
+        $repository->getLastGeneration($colonyId)->willThrow(new ColonyDoesNotExistException());
 
         $this->execute($query)->shouldBeLike(new ColonyResult([]));
     }

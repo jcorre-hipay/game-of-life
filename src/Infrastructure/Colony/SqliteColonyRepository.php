@@ -175,6 +175,37 @@ class SqliteColonyRepository implements ColonyRepositoryInterface
     }
 
     /**
+     * @param ColonyId $id
+     * @return int
+     * @throws RepositoryNotAvailableException
+     * @throws ColonyDoesNotExistException
+     */
+    public function getLastGeneration(ColonyId $id): int
+    {
+        try {
+            $results = $this->connection->query(
+                'SELECT generation FROM colonies WHERE id = :id',
+                [
+                    'id' => $id->toString(),
+                ]
+            );
+
+            if (empty($results)) {
+                throw new ColonyDoesNotExistException(
+                    \sprintf(
+                        'Cannot get the last generation of the colony %s because it does not exist.',
+                        $id->toString()
+                    )
+                );
+            }
+
+            return \intval($results[0]['generation']);
+        } catch (DataAccessException $exception) {
+            throw new RepositoryNotAvailableException('Fail to get the last generation of the colony.', 0, $exception);
+        }
+    }
+
+    /**
      * @param ColonyInterface $colony
      * @return ColonyCreated
      * @throws RepositoryNotAvailableException

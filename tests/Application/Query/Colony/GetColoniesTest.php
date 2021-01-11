@@ -85,6 +85,7 @@ class GetColoniesTest extends KernelTestCase
         Assert::assertInstanceOf(Colony::class, $result[0]);
         Assert::assertSame('59494a9a-32cc-481e-a4f1-093a8dcef162', $result[0]->getId());
         Assert::assertSame(2, $result[0]->getGeneration());
+        Assert::assertSame(2, $result[0]->getLastGeneration());
         Assert::assertSame(3, $result[0]->getWidth());
         Assert::assertSame(2, $result[0]->getHeight());
         Assert::assertSame(['dead', 'dead', 'dead', 'dead', 'dead', 'dead'], $result[0]->getCellStates());
@@ -92,6 +93,7 @@ class GetColoniesTest extends KernelTestCase
         Assert::assertInstanceOf(Colony::class, $result[1]);
         Assert::assertSame('4aea4bdb-c789-4945-8086-54bf22561c27', $result[1]->getId());
         Assert::assertSame(0, $result[1]->getGeneration());
+        Assert::assertSame(0, $result[1]->getLastGeneration());
         Assert::assertSame(2, $result[1]->getWidth());
         Assert::assertSame(2, $result[1]->getHeight());
         Assert::assertSame(['dead', 'live', 'live', 'live'], $result[1]->getCellStates());

@@ -224,6 +224,52 @@ class SqliteColonyRepositoryTest extends KernelTestCase
     /**
      * @test
      */
+    public function itFindsTheLastGenerationOfAColony(): void
+    {
+        $colonyId = $this->subject->getIdFromString('59494a9a-32cc-481e-a4f1-093a8dcef162');
+
+        $this->subject->add(
+            $this->colonyFactory->create($colonyId, 3, 2, ['dead', 'live', 'dead', 'live', 'dead', 'live'])
+        );
+
+        $this->subject->commit(
+            [
+                new CellDied($colonyId, new \DateTime(), 3),
+                new CellBorn($colonyId, new \DateTime(), 4),
+                new CellDied($colonyId, new \DateTime(), 5),
+                new GenerationEnded($colonyId, new \DateTime(), 0),
+                new CellDied($colonyId, new \DateTime(), 1),
+                new CellDied($colonyId, new \DateTime(), 4),
+                new GenerationEnded($colonyId, new \DateTime(), 1),
+            ]
+        );
+
+        Assert::assertSame(2, $this->subject->getLastGeneration($colonyId));
+    }
+
+    /**
+     * @test
+     */
+    public function itThrowsAnExceptionWhenSearchingTheLastGenerationForAColonyThatDoesNotExist(): void
+    {
+        try {
+            $this->subject->getLastGeneration($this->subject->getIdFromString('59494a9a-32cc-481e-a4f1-093a8dcef162'));
+        } catch (ColonyDoesNotExistException $exception) {
+            Assert::assertSame(
+                'Cannot get the last generation of the colony 59494a9a-32cc-481e-a4f1-093a8dcef162'
+                .' because it does not exist.',
+                $exception->getMessage()
+            );
+
+            return;
+        }
+
+        Assert::fail('Fail asserting an exception has been thrown.');
+    }
+
+    /**
+     * @test
+     */
     public function itRemovesAColony(): void
     {
         $colonyId = $this->subject->getIdFromString('59494a9a-32cc-481e-a4f1-093a8dcef162');

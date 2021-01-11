@@ -54,7 +54,7 @@ class ColonyController extends AbstractController
             /** @var Colony $colony */
             $colonies[] = [
                 'id' => $colony->getId(),
-                'generation' => $colony->getGeneration(),
+                'generation' => $colony->getLastGeneration(),
             ];
         }
 
@@ -96,6 +96,8 @@ class ColonyController extends AbstractController
                     'height' => $colony->getHeight(),
                     'cell_states' => $colony->getCellStates(),
                 ],
+                'has_next_generation' => $colony->getGeneration() !== $colony->getLastGeneration(),
+                'has_previous_generation' => $colony->getGeneration() !== 0,
             ]
         );
     }

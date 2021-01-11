@@ -48,8 +48,9 @@ class GetColoniesSpec extends ObjectBehavior
         ColonyInterface $colony
     ) {
         $repository->findAll()->willReturn([$colony]);
+        $colony->getGeneration()->willReturn(51);
 
-        $this->execute($query)->shouldBeLike(new ColonyResult([new Colony($colony->getWrappedObject())]));
+        $this->execute($query)->shouldBeLike(new ColonyResult([new Colony($colony->getWrappedObject(), 51)]));
     }
 
     function it_throws_an_exception_when_the_repository_is_not_available(
