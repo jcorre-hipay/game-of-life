@@ -49,6 +49,9 @@ services:
                 arguments: ['@GameOfLife\Application\Command\Colony\EvolveColony']
             -
                 method: register
+                arguments: ['@GameOfLife\Application\Query\Colony\GetColonies']
+            -
+                method: register
                 arguments: ['@GameOfLife\Application\Query\Colony\GetColony']
 
     GameOfLife\Infrastructure\Bus\LoggerBus:

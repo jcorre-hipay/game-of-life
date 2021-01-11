@@ -10,7 +10,9 @@ use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Session;
 use GameOfLife\Domain\Colony\ColonyFactoryInterface;
 use GameOfLife\Domain\Colony\ColonyRepositoryInterface;
+use GameOfLife\Domain\Event\GenerationEnded;
 use GameOfLife\Tests\Behat\ColonyHistory\Builder;
+use GameOfLife\Tests\Behat\ColonyHistory\Comparator;
 use GameOfLife\Tests\Behat\ColonyHistory\Parser;
 use GameOfLife\Tests\Mock\Infrastructure\Colony\GeneratePredictableCellState;
 use GameOfLife\Tests\Mock\Infrastructure\Identifier\GeneratePredictableEntityIdSeed;
@@ -20,6 +22,7 @@ class FeatureContext implements Context
 {
     private $session;
     private $parser;
+    private $comparator;
     private $colonyFactory;
     private $colonyRepository;
     private $uuidGenerator;
@@ -28,6 +31,7 @@ class FeatureContext implements Context
     public function __construct(
         Session $session,
         Parser $parser,
+        Comparator $comparator,
         ColonyFactoryInterface $colonyFactory,
         ColonyRepositoryInterface $colonyRepository,
         GeneratePredictableEntityIdSeed $uuidGenerator,
@@ -35,6 +39,7 @@ class FeatureContext implements Context
     ) {
         $this->session = $session;
         $this->parser = $parser;
+        $this->comparator = $comparator;
         $this->colonyFactory = $colonyFactory;
         $this->colonyRepository = $colonyRepository;
         $this->uuidGenerator = $uuidGenerator;
@@ -57,16 +62,28 @@ class FeatureContext implements Context
     public function thereIsTheColony(string $colonyId, PyStringNode $colony): void
     {
         $colonyHistory = $this->parser->execute(new Builder(), $colony->getRaw());
-        Assert::assertCount(1, $colonyHistory, 'The PyString should represent exactly one colony.');
 
+        if (empty($colonyHistory)) {
+            return;
+        }
+
+        $colony = \array_shift($colonyHistory);
+
+        $id = $this->colonyRepository->getIdFromString($colonyId);
         $this->colonyRepository->add(
-            $this->colonyFactory->create(
-                $this->colonyRepository->getIdFromString($colonyId),
-                $colonyHistory[0]['width'],
-                $colonyHistory[0]['height'],
-                $colonyHistory[0]['cell_states']
-            )
+            $this->colonyFactory->create($id, $colony['width'], $colony['height'], $colony['cell_states'])
         );
+
+        while (!empty($colonyHistory)) {
+            $next = \array_shift($colonyHistory);
+
+            $now = new \DateTimeImmutable();
+            $events = $this->comparator->execute($id, $now, $colony['cell_states'], $next['cell_states']);
+            $events[] = new GenerationEnded($id, $now, $colony['generation']);
+            $this->colonyRepository->commit($events);
+
+            $colony = $next;
+        }
     }
 
     /**

@@ -12,6 +12,7 @@ use GameOfLife\Application\Exception\ColonyNotFoundException;
 use GameOfLife\Application\Exception\InvalidParametersException;
 use GameOfLife\Application\Query\Colony\Colony;
 use GameOfLife\Application\Query\Colony\ColonyResult;
+use GameOfLife\Application\Query\Colony\GetColoniesQuery;
 use GameOfLife\Application\Query\Colony\GetColonyQuery;
 use GameOfLife\Domain\Event\ColonyCreated;
 use GameOfLife\Infrastructure\Bus\CommandBusInterface;
@@ -41,28 +42,23 @@ class ColonyController extends AbstractController
      * @Route("/colony", methods={"GET"}, name="list_colonies")
      *
      * @return Response
+     * @throws ApplicationException
      */
     public function index(): Response
     {
-        return $this->render(
-            'colony/index.html.twig',
-            [
-                'colonies' => [
-                    [
-                        'id' => '59494a9a-32cc-481e-a4f1-093a8dcef162',
-                        'generation' => 0,
-                    ],
-                    [
-                        'id' => '4aea4bdb-c789-4945-8086-54bf22561c27',
-                        'generation' => 34,
-                    ],
-                    [
-                        'id' => '0310477c-8a5d-401e-835f-1e615c9972c0',
-                        'generation' => 0,
-                    ],
-                ],
-            ]
-        );
+        $result = $this->queryBus->send(new GetColoniesQuery());
+
+        $colonies = [];
+
+        foreach ($result as $colony) {
+            /** @var Colony $colony */
+            $colonies[] = [
+                'id' => $colony->getId(),
+                'generation' => $colony->getGeneration(),
+            ];
+        }
+
+        return $this->render('colony/index.html.twig', ['colonies' => $colonies]);
     }
 
     /**
