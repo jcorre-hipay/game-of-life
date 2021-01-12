@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace GameOfLife\Infrastructure\Controller;
 
 use GameOfLife\Application\Command\Colony\CreateColonyCommand;
+use GameOfLife\Application\Command\Colony\DeleteColonyCommand;
 use GameOfLife\Application\Command\Colony\EvolveColonyCommand;
 use GameOfLife\Application\Command\DomainEventCollection;
 use GameOfLife\Application\Exception\ApplicationException;
@@ -190,5 +191,23 @@ class ColonyController extends AbstractController
                 'generation' => $colony->getGeneration(),
             ]
         );
+    }
+
+    /**
+     * @Route("/colony/{id}/delete", methods={"POST"}, name="delete_colony")
+     *
+     * @param string $id
+     * @return Response
+     * @throws ApplicationException
+     */
+    public function delete(string $id): Response
+    {
+        try {
+            $this->commandBus->send(new DeleteColonyCommand($id));
+        } catch (ColonyNotFoundException $exception) {
+            throw $this->createNotFoundException('Not Found', $exception);
+        }
+
+        return $this->redirectToRoute('list_colonies');
     }
 }

@@ -15,7 +15,7 @@
                 <td><a href="{{ url('show_colony', {'id': colony.id, 'generation': colony.generation}) }}">{{ colony.id }}</a></td>
                 <td>{{ colony.generation }}</td>
                 <td>
-                    <form method="post" action="#">
+                    <form method="post" action="{{ url('delete_colony', {'id': colony.id}) }}">
                         <input type="submit" class="button button-delete" value="delete"/>
                     </form>
                 </td>

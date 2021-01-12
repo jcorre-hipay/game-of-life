@@ -46,6 +46,9 @@ services:
                 arguments: ['@GameOfLife\Application\Command\Colony\CreateColony']
             -
                 method: register
+                arguments: ['@GameOfLife\Application\Command\Colony\DeleteColony']
+            -
+                method: register
                 arguments: ['@GameOfLife\Application\Command\Colony\EvolveColony']
             -
                 method: register

@@ -46,7 +46,7 @@ abstract class AbstractCollection extends \SplFixedArray implements \Countable, 
      */
     final public function offsetUnset($offset)
     {
-        throw new CollectionIsImmutableException('Item affectation is forbidden.');
+        throw new CollectionIsImmutableException('Item deletion is forbidden.');
     }
 
     /**
